@@ -28,6 +28,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class TerminalFragment extends Fragment implements ServiceConnection, SerialListener {
 
     private enum Connected { False, Pending, True }
@@ -35,8 +42,9 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
     private String deviceAddress;
     private SerialService service;
 
-    private TextView receiveText;
-    private TextView sendText;
+
+    //private TextView receiveText;
+    //private TextView sendText;
     private TextUtil.HexWatcher hexWatcher;
 
     private Connected connected = Connected.False;
@@ -52,7 +60,7 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        setRetainInstance(true);
+        //setRetainInstance(true);
         deviceAddress = getArguments().getString("device");
     }
 
@@ -123,32 +131,32 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_terminal, container, false);
-        receiveText = view.findViewById(R.id.receive_text);                          // TextView performance decreases with number of spans
-        receiveText.setTextColor(getResources().getColor(R.color.colorRecieveText)); // set as default color to reduce number of spans
-        receiveText.setMovementMethod(ScrollingMovementMethod.getInstance());
+        //receiveText = view.findViewById(R.id.receive_text);                          // TextView performance decreases with number of spans
+        //receiveText.setTextColor(getResources().getColor(R.color.colorRecieveText)); // set as default color to reduce number of spans
+        //receiveText.setMovementMethod(ScrollingMovementMethod.getInstance());
 
-        sendText = view.findViewById(R.id.send_text);
-        hexWatcher = new TextUtil.HexWatcher(sendText);
-        hexWatcher.enable(hexEnabled);
-        sendText.addTextChangedListener(hexWatcher);
-        sendText.setHint(hexEnabled ? "HEX mode" : "");
+        //sendText = view.findViewById(R.id.send_text);
+        //hexWatcher = new TextUtil.HexWatcher(sendText);
+        //hexWatcher.enable(hexEnabled);
+        //sendText.addTextChangedListener(hexWatcher);
+        //sendText.setHint(hexEnabled ? "HEX mode" : "");
 
-        View sendBtn = view.findViewById(R.id.send_btn);
-        sendBtn.setOnClickListener(v -> send(sendText.getText().toString()));
+        //View sendBtn = view.findViewById(R.id.send_btn);
+        //sendBtn.setOnClickListener(v -> send(sendText.getText().toString()));
         return view;
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_terminal, menu);
-        menu.findItem(R.id.hex).setChecked(hexEnabled);
+        //menu.findItem(R.id.hex).setChecked(hexEnabled);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.clear) {
-            receiveText.setText("");
+            //receiveText.setText("");
             return true;
         } else if (id == R.id.newline) {
             String[] newlineNames = getResources().getStringArray(R.array.newline_names);
@@ -164,9 +172,9 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
             return true;
         } else if (id == R.id.hex) {
             hexEnabled = !hexEnabled;
-            sendText.setText("");
+            //sendText.setText("");
             hexWatcher.enable(hexEnabled);
-            sendText.setHint(hexEnabled ? "HEX mode" : "");
+            //sendText.setHint(hexEnabled ? "HEX mode" : "");
             item.setChecked(hexEnabled);
             return true;
         } else {
@@ -214,8 +222,8 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
                 data = (str + newline).getBytes();
             }
             SpannableStringBuilder spn = new SpannableStringBuilder(msg+'\n');
-            spn.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorSendText)), 0, spn.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            receiveText.append(spn);
+            //spn.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorSendText)), 0, spn.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            //receiveText.append(spn);
             service.write(data);
         } catch (Exception e) {
             onSerialIoError(e);
@@ -224,28 +232,31 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
 
     private void receive(byte[] data) {
         if(hexEnabled) {
-            receiveText.append(TextUtil.toHexString(data) + '\n');
+            //receiveText.append(TextUtil.toHexString(data) + '\n');
         } else {
             String msg = new String(data);
             if(newline.equals(TextUtil.newline_crlf) && msg.length() > 0) {
                 // don't show CR as ^M if directly before LF
                 msg = msg.replace(TextUtil.newline_crlf, TextUtil.newline_lf);
                 // special handling if CR and LF come in separate fragments
-                if (pendingNewline && msg.charAt(0) == '\n') {
-                    Editable edt = receiveText.getEditableText();
-                    if (edt != null && edt.length() > 1)
-                        edt.replace(edt.length() - 2, edt.length(), "");
+                if (pendingNewline && msg.charAt(0) == '\n') {;
+                    //Editable edt = receiveText.getEditableText();
+                    //if (edt != null && edt.length() > 1)
+                        //edt.replace(edt.length() - 2, edt.length(), "");
                 }
                 pendingNewline = msg.charAt(msg.length() - 1) == '\r';
             }
-            receiveText.append(TextUtil.toCaretString(msg, newline.length() != 0));
+            //receiveText.append(TextUtil.toCaretString(msg, newline.length() != 0));
         }
     }
+
+
+
 
     private void status(String str) {
         SpannableStringBuilder spn = new SpannableStringBuilder(str+'\n');
         spn.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorStatusText)), 0, spn.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        receiveText.append(spn);
+        //receiveText.append(spn);
     }
 
     /*
@@ -265,8 +276,54 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
 
     @Override
     public void onSerialRead(byte[] data) {
+        byte[] packet_raw = Arrays.copyOf(data, data.length);
+        parsePacket(packet_raw);
         receive(data);
     }
+
+    private void parsePacket(byte[] packet){
+        if(packet != null) {
+            if (packet.length >= 4)
+                if (packet[packet.length-1] == packet.length)
+                    getInfoFromPacket(packet);
+        }
+        else
+            return;
+
+
+    }
+
+    private void getInfoFromPacket(byte[] data){
+        switch (data[0]) {
+            case 'H':
+                //if(data[1] == (byte)0xFF) manejo si hay alarmas
+                VitalSignsMonitor.HeartBeat(data[2]);
+                break;
+            case 'O':
+                //if(data[1] == (byte)0xFF) manejo si hay alarmas
+                VitalSignsMonitor.Oxygen(data[2]);
+                break;
+            case 'T':
+                //if(data[1] == (byte)0xFF) else{cambio color a normal o algo} manejo si hay alarmas
+                VitalSignsMonitor.Temperature(data[2], data[3]);
+                break;
+            case 'E':
+                int lenECG = data[1];   //el n que mando
+                VitalSignsMonitor.UpdateECGGraph(Arrays.copyOfRange(data, 2, data.length-1), lenECG);
+                break;
+            case 'P':
+                int lenPPG = data[1];   //el n que mando
+                VitalSignsMonitor.UpdatePPGGraph(Arrays.copyOfRange(data, 2, data.length-1), lenPPG);
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    /*private boolean newPacket(){
+        return curr_H==false && curr_O==false && curr_T==false && curr_E==false  && curr_P==false;
+    }*/
 
     @Override
     public void onSerialIoError(Exception e) {

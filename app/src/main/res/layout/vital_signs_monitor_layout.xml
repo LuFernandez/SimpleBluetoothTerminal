@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="3dip"
+    android:layout_marginRight="3dip"
+    android:background="@color/colorBackground"
+    tools:context=".VitalSignsMonitorFragment">
+
+
+    <TextView
+        android:id="@+id/section_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/ECGgraph"
+        style="@style/graphs"
+        android:layout_width="match_parent"
+        android:layout_marginStart="3dip"
+        android:layout_marginTop="102dip"
+        android:layout_marginEnd="3dip"
+        android:background="@drawable/red_bpm_shape" />
+
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/PPGgraph"
+        style="@style/graphs"
+        android:layout_height="215dip"
+        android:layout_marginStart="3dip"
+        android:layout_marginTop="415dip"
+        android:layout_marginEnd="3dip"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/green_oxygen_shape"
+        app:layout_anchor="@+id/PPGgraph"
+        app:layout_anchorGravity="bottom|center" />
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dip"
+        android:layout_marginTop="2dip"
+        android:layout_marginEnd="3dip">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="100dip">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_weight=".47"
+                android:background="@drawable/red_bpm_shape"
+                android:paddingLeft="5dip"
+                android:text="Heart Rate (BMP)"
+                android:textColor="@color/colorText"
+                android:textSize="24dip" />
+
+            <TextView
+                android:layout_width="4dip"
+                android:layout_height="match_parent"
+                android:layout_column="2" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_weight=".47"
+                android:background="@drawable/blue_temp_shape"
+                android:paddingLeft="5dip"
+                android:text="Temp (°C)"
+                android:textColor="@color/colorText"
+                android:textSize="24dip" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/text_bpm"
+                android:layout_width="0dp"
+                android:layout_height="68dip"
+                android:layout_column="1"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight=".49"
+                android:background="@drawable/red_bpm_shape"
+                android:gravity="center"
+                android:textColor="@color/colorText"
+                android:textSize="48dip"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="4dip"
+                android:layout_height="match_parent"
+                android:layout_column="2" />
+
+            <TextView
+                android:id="@+id/text_temp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight=".49"
+                android:background="@drawable/blue_temp_shape"
+                android:gravity="center"
+                android:textColor="@color/colorText"
+                android:textSize="48dip"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+    </TableLayout>
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dip"
+        android:layout_marginStart="3dip"
+        android:layout_marginTop="325dip"
+        android:layout_marginEnd="3dip">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="100dip">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_weight=".49"
+                android:background="@drawable/green_oxygen_shape"
+                android:paddingLeft="5dip"
+                android:text="SpO2"
+                android:textColor="@color/colorText"
+                android:textSize="24dip" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_weight=".49"
+                android:background="@drawable/green_oxygen_shape"
+                android:textSize="24dp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="100dip">
+
+            <TextView
+                android:id="@+id/text_SpO2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight=".49"
+                android:background="@drawable/green_oxygen_shape"
+                android:gravity="center"
+                android:textColor="@color/colorText"
+                android:textSize="48dip"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_weight=".49"
+                android:background="@drawable/green_oxygen_shape"
+                android:textSize="48dip" />
+
+        </TableRow>
+
+    </TableLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
